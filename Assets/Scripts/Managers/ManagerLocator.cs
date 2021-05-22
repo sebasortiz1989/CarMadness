@@ -17,6 +17,7 @@ public class ManagerLocator : MonoBehaviour
         }
         set { _instance = value; }
     }
+
     private static ManagerLocator _instance;
 
     public ManagerLocator()
