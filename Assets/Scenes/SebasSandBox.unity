@@ -200,7 +200,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 278775345}
-  m_LocalRotation: {x: 0.15493868, y: -0.00004399177, z: 0.000006899342, w: 0.9879241}
+  m_LocalRotation: {x: 0.15493868, y: -0.000043973563, z: 0.0000068964873, w: 0.9879241}
   m_LocalPosition: {x: -14.35, y: 18.97, z: -34.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -332,7 +332,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &630301046
 GameObject:
@@ -364,7 +364,7 @@ Transform:
   - {fileID: 278775348}
   - {fileID: 888214435}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &888214434
 GameObject:
@@ -390,7 +390,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 888214434}
-  m_LocalRotation: {x: 0.15493868, y: -0.00004399177, z: 0.000006899342, w: 0.9879241}
+  m_LocalRotation: {x: 0.15493868, y: -0.000043973563, z: 0.0000068964873, w: 0.9879241}
   m_LocalPosition: {x: -14.35, y: 18.97, z: -34.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -442,7 +442,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 534678946070773560, guid: 7a9180571ab006649aa98c5c0dbe2c37, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 534678946070773560, guid: 7a9180571ab006649aa98c5c0dbe2c37, type: 3}
       propertyPath: m_LocalPosition.x
@@ -487,6 +487,14 @@ PrefabInstance:
     - target: {fileID: 534678946070773561, guid: 7a9180571ab006649aa98c5c0dbe2c37, type: 3}
       propertyPath: m_Name
       value: Vehicle Template
+      objectReference: {fileID: 0}
+    - target: {fileID: 4615861175939851400, guid: 7a9180571ab006649aa98c5c0dbe2c37, type: 3}
+      propertyPath: manualMaxTorque
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4615861175939851400, guid: 7a9180571ab006649aa98c5c0dbe2c37, type: 3}
+      propertyPath: manualMaxSteerAngle
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a9180571ab006649aa98c5c0dbe2c37, type: 3}
@@ -569,7 +577,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2114256950
 GameObject:

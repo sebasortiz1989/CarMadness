@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Vehicles.Vehicle
@@ -10,6 +12,7 @@ namespace Vehicles.Vehicle
         [SerializeField] float manualMaxTorque = 500;
         [SerializeField] float manualMaxSteerAngle = 30;
         [SerializeField] float manualMaxBrakeTorque = 1000;
+        [SerializeField] float maxRotation = 10;
 
         [Header("Wheel references")]
         [SerializeField] GameObject[] wheelMeshes;
@@ -20,14 +23,47 @@ namespace Vehicles.Vehicle
         Vector3 position;
 
         // Initialize Variables
-        float accelerate;
-        float steer;
-        float brake;
+        private float accelerate;
+        private float steer;
+        private float brake;
+        private bool stabilizingCar;
+        public float zRotation;
 
         // Update is called once per frame
         void Update()
         {
             ManualDrive();
+            //PreventCarFromTipingOver();
+        }
+
+        private void PreventCarFromTipingOver()
+        {
+            zRotation = WrapAngle(this.transform.localEulerAngles.z);
+            if (Mathf.Abs(zRotation) > maxRotation && !stabilizingCar)
+            {
+                stabilizingCar = true;
+            }
+
+            if (Mathf.Abs(zRotation) > 3)
+            {
+                if (stabilizingCar)
+                {
+                    float rotatingAngle = -Mathf.Sign(zRotation);
+                    this.transform.Rotate(Vector3.forward, rotatingAngle);
+                }
+                else
+                {
+                    stabilizingCar = false;
+                }
+            }
+        }
+
+        private float WrapAngle(float angle)
+        {
+            angle %= 360;
+            if (angle > 180)
+                return angle - 360;
+            return angle;
         }
 
         private void ManualDrive()
