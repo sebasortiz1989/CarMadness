@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +8,17 @@ public class AIController : MonoBehaviour
 {
     [SerializeField] Transform goal;
     [SerializeField] float waypointAccuracy = 1f;
-    [SerializeField] UnityStandardAssets.Utility.WaypointCircuit circuit;
+    [SerializeField] UnityStandardAssets.Utility.WaypointCircuit[] circuits;
     [SerializeField] float turnAngleThreshold = 40f;
+    [SerializeField] float chaseRange = 7f;
+    [SerializeField] float attackRange = 5f; // TODO make this dependant on weapon
+    [SerializeField] float fleeDistance = 10f;
     Vector3 goalVector;
     int currentWaypoint = 0;
+    Transform player;
+    bool isChasingPlayer = false;
+    int WPCircuitIndex = 0;
+    bool attackCooldown = false;
 
     [SerializeField] Rigidbody sphereRigidbody;
     [SerializeField] float forwardSpeed;
@@ -24,10 +32,18 @@ public class AIController : MonoBehaviour
     float turnInput;
     bool isGrounded;
 
+    void Awake()
+    {
+        player = GameObject.FindWithTag("Player").transform; // TODO how to use a manager instead?
+    }
     void Start()
     {
         // this simply is making sure we don't have issues with the car body following the sphere
         sphereRigidbody.transform.parent = null;
+
+        // randomize which cars end up using which circuit
+        WPCircuitIndex = UnityEngine.Random.Range(0, circuits.Length);
+        currentWaypoint = UnityEngine.Random.Range(0, GetCurrentCircuit().Waypoints.Length);
     }
 
     void FixedUpdate()
@@ -49,27 +65,78 @@ public class AIController : MonoBehaviour
 
     void Update()
     {
+        // if is in chase range
+        if (IsInChaseRange())
+        {
+            MoveToPlayer();
+            if (InAttackRange())
+            {
+                AttackBehaviour();
+            }
+        }
+        else
+        {
+             // if not in chase range
+            if (isChasingPlayer && Vector3.Distance(player.position, transform.position) > fleeDistance)
+            {
+                GoToRandomWaypoint();
+                isChasingPlayer = false;
+            }
+                // choose a random set of waypoints
+                // go to first waypoint
+        }
+            
+        // TODO check if car is stuck
         SetWaypoint();
+
         MovementInput();
         TurnVehicle();
         MoveCarBodyWithSphere();
     }
 
+    private void GoToRandomWaypoint()
+    {
+        WPCircuitIndex = UnityEngine.Random.Range(0, circuits.Length);
+        currentWaypoint = UnityEngine.Random.Range(0, GetCurrentCircuit().Waypoints.Length);
+    }
+
+    private bool IsInChaseRange()
+    {
+        return Vector3.Distance(player.position, transform.position) < chaseRange;
+    }
+
+    private void MoveToPlayer()
+    {
+        isChasingPlayer = true;
+        goal = player;
+    }
+
+    private bool InAttackRange()
+    {
+        return Vector3.Distance(player.position, transform.position) < attackRange;
+    }
+
+    private void AttackBehaviour()
+    {
+        print("I'm attacking!");
+
+    }
+
+    private UnityStandardAssets.Utility.WaypointCircuit GetCurrentCircuit()
+    {
+        return circuits[WPCircuitIndex];
+    }
+
     private void SetWaypoint()
     {
-        if (circuit.Waypoints.Length == 0) return;
-        // Vector3 lookAtGoal = new Vector3 (circuit.Waypoints[currentWaypoint].transform.position.x,
-        //                                     transform.position.y, 
-        //                                     circuit.Waypoints[currentWaypoint].transform.position.z);
-        // Vector3 direction = lookAtGoal - transform.position;
-        // transform.rotation = Quaternion.Slerp(transform.rotation, 
-        //                                     Quaternion.LookRotation(direction), 
-        //                                     Time.deltaTime * rotSpeed);
-        goal = circuit.Waypoints[currentWaypoint].transform;
+        if (GetCurrentCircuit().Waypoints.Length == 0) return;
+        if (isChasingPlayer) return;
+       
+        goal = GetCurrentCircuit().Waypoints[currentWaypoint].transform;
         if (Vector3.Distance(goal.transform.position, transform.position) < waypointAccuracy)
         {
             currentWaypoint++;
-            if (currentWaypoint >= circuit.Waypoints.Length)
+            if (currentWaypoint >= GetCurrentCircuit().Waypoints.Length)
             {
                 currentWaypoint = 0;
             }
@@ -128,7 +195,6 @@ public class AIController : MonoBehaviour
             if (hitInfoRight.transform != this.transform && (hitInfoRight.transform.gameObject.tag == "Obstacle" || 
                                                                 hitInfoRight.transform.gameObject.tag == "Car"))
             {
-                print("found collider on the right side");
                 turnInput = -1;
             }
         }
@@ -144,7 +210,6 @@ public class AIController : MonoBehaviour
             }
         }
 
-       
         //turnInput = goalVector.normalized.x;
         float newRotation = turnInput * turnSpeed * Time.deltaTime;
         transform.Rotate(0, newRotation, 0, Space.World);
@@ -168,5 +233,12 @@ public class AIController : MonoBehaviour
         {
             //print("well, well, it appears I'm not touching what I believe to be the ground, dude");
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, chaseRange);    
+        
     }
 }

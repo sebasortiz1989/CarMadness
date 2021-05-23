@@ -38,7 +38,7 @@ public class CarController : MonoBehaviour
         else
         {
             // make the car respond to gravity when it is not grounded
-            sphereRigidbody.AddForce(transform.up * -gravity);
+            sphereRigidbody.AddForce(new Vector3(0, -gravity, moveInput));//transform.up * -gravity);
         }
     }
 
@@ -81,11 +81,11 @@ public class CarController : MonoBehaviour
         isGrounded = Physics.CheckSphere(transform.position, distanceCheck, groundLayers, QueryTriggerInteraction.Ignore);
         if (isGrounded)
         {
-            print("I am grounded, yo");
+           // print("I am grounded, yo");
         }
         else
         {
-            print("well, well, it appears I'm not touching what I believe to be the ground, dude");
+           // print("well, well, it appears I'm not touching what I believe to be the ground, dude");
         }
     }
 

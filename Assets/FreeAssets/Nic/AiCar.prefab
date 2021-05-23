@@ -128,8 +128,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.2485504, z: 3.172329}
-  m_Center: {x: 0, y: 0.19, z: 0.06280041}
+  m_Size: {x: 1.3599815, y: 1.2485504, z: 3.172329}
+  m_Center: {x: -0.17999077, y: 0.19, z: 0.06280041}
 --- !u!54 &1785028642644028632
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -138,7 +138,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4416712351308733372}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -160,8 +160,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {fileID: 0}
   waypointAccuracy: 10
-  circuit: {fileID: 0}
+  circuits:
+  - {fileID: 0}
+  - {fileID: 0}
   turnAngleThreshold: 8
+  chaseRange: 16.44
+  attackRange: 5
   sphereRigidbody: {fileID: 4416712352965771976}
   forwardSpeed: 50
   reverseSpeed: 20
