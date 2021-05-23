@@ -42,8 +42,12 @@ public class AIController : MonoBehaviour
         sphereRigidbody.transform.parent = null;
 
         // randomize which cars end up using which circuit
-        WPCircuitIndex = UnityEngine.Random.Range(0, circuits.Length);
-        currentWaypoint = UnityEngine.Random.Range(0, GetCurrentCircuit().Waypoints.Length);
+        if (circuits.Length > 0)
+        {
+            WPCircuitIndex = UnityEngine.Random.Range(0, circuits.Length);
+            currentWaypoint = UnityEngine.Random.Range(0, GetCurrentCircuit().Waypoints.Length);
+        }
+        
     }
 
     void FixedUpdate()
@@ -65,7 +69,6 @@ public class AIController : MonoBehaviour
 
     void Update()
     {
-        // if is in chase range
         if (IsInChaseRange())
         {
             MoveToPlayer();
@@ -76,14 +79,12 @@ public class AIController : MonoBehaviour
         }
         else
         {
-             // if not in chase range
             if (isChasingPlayer && Vector3.Distance(player.position, transform.position) > fleeDistance)
             {
                 GoToRandomWaypoint();
                 isChasingPlayer = false;
             }
-                // choose a random set of waypoints
-                // go to first waypoint
+    
         }
             
         // TODO check if car is stuck
