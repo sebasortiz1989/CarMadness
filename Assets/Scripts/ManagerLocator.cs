@@ -1,9 +1,10 @@
 using UnityEngine;
+using Madness.SceneManagement;
 
 public class ManagerLocator : MonoBehaviour
 {
     //monobehaviours
-    public UIManager _uiManager;
+    public SceneManager _sceneManager;
 
     //singletons
 
