@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class AIController : MonoBehaviour
 {
@@ -13,17 +12,23 @@ public class AIController : MonoBehaviour
     [SerializeField] float chaseRange = 7f;
     [SerializeField] float attackRange = 5f; // TODO make this dependant on weapon
     [SerializeField] float fleeDistance = 10f;
+    [SerializeField] float rotationRecoverySpeed = 5f;
     Vector3 goalVector;
     int currentWaypoint = 0;
     Transform player;
     bool isChasingPlayer = false;
     int WPCircuitIndex = 0;
-    bool attackCooldown = false;
+    bool shouldProcessInputs = true;
+    bool hitByExplosion = false;
+    //Fighter fighter;
+    //bool attackCooldown = false;
 
     [SerializeField] Rigidbody sphereRigidbody;
+    [SerializeField] Rigidbody bodyRigidbody;
     [SerializeField] float forwardSpeed;
     [SerializeField] float reverseSpeed;
     [SerializeField] float turnSpeed;
+
     [SerializeField] float distanceCheck = .2f;
     [SerializeField] LayerMask groundLayers;
     [SerializeField] float gravity = 50f;
@@ -35,7 +40,9 @@ public class AIController : MonoBehaviour
     void Awake()
     {
         player = GameObject.FindWithTag("Player").transform; // TODO how to use a manager instead?
+        //fighter = GetComponent<Fighter>();
     }
+
     void Start()
     {
         // this simply is making sure we don't have issues with the car body following the sphere
@@ -54,6 +61,7 @@ public class AIController : MonoBehaviour
     {
         // make sure any objects you want to drive on are tagged as ground layer
         CheckIfGrounded();
+
         
         if (isGrounded)
         {
@@ -67,11 +75,13 @@ public class AIController : MonoBehaviour
         }
     }
 
-    void Update()
+    void LateUpdate()
     {
+        //if (!shouldProcessInputs) return;
+
         if (IsInChaseRange())
         {
-            MoveToPlayer();
+            SetPlayerAsGoal();
             if (InAttackRange())
             {
                 AttackBehaviour();
@@ -93,6 +103,7 @@ public class AIController : MonoBehaviour
         MovementInput();
         TurnVehicle();
         MoveCarBodyWithSphere();
+
     }
 
     private void GoToRandomWaypoint()
@@ -106,7 +117,7 @@ public class AIController : MonoBehaviour
         return Vector3.Distance(player.position, transform.position) < chaseRange;
     }
 
-    private void MoveToPlayer()
+    private void SetPlayerAsGoal()
     {
         isChasingPlayer = true;
         goal = player;
@@ -119,8 +130,8 @@ public class AIController : MonoBehaviour
 
     private void AttackBehaviour()
     {
-        print("I'm attacking!");
-
+        //print("I'm attacking!");
+        
     }
 
     private UnityStandardAssets.Utility.WaypointCircuit GetCurrentCircuit()
@@ -145,10 +156,9 @@ public class AIController : MonoBehaviour
         
     }
 
-    
     private void MovementInput()
     {
-        //moveInput = Input.GetAxisRaw("Vertical");
+        if (!shouldProcessInputs) return;
         goalVector = goal.position - transform.position;
         if (goalVector.magnitude > 1) // todo fix magic number accuracy
         {
@@ -171,7 +181,7 @@ public class AIController : MonoBehaviour
 
     void TurnVehicle()
     {
-        //turnInput = Input.GetAxisRaw("Horizontal");
+        if (!shouldProcessInputs) return;
 
         if (Vector3.Angle(transform.forward, goalVector) > turnAngleThreshold) 
         {
@@ -198,8 +208,7 @@ public class AIController : MonoBehaviour
             {
                 turnInput = -1;
             }
-        }
-        
+        }        
 
         RaycastHit hitInfoLeft;
         if (Physics.Raycast(transform.position, -transform.right + transform.forward, out hitInfoLeft, 4f))
@@ -211,16 +220,46 @@ public class AIController : MonoBehaviour
             }
         }
 
-        //turnInput = goalVector.normalized.x;
         float newRotation = turnInput * turnSpeed * Time.deltaTime;
         transform.Rotate(0, newRotation, 0, Space.World);
+    }
+
+    public Rigidbody GetRigidBody()
+    {
+        return bodyRigidbody;
+    }
+
+    public void FreezeMovementFromExplosion()
+    {
+        shouldProcessInputs = false;
+        hitByExplosion = true;
+        Invoke("RecoverMovement", 4f); // TODO shouldn't be able to move once grounded
+    }
+
+    private void RecoverMovement()
+    {
+        shouldProcessInputs = true;
+        hitByExplosion = false;
+
     }
 
     void MoveCarBodyWithSphere()
     {
         // With your car game object, be sure that the car body and sphere start in exactly the same position
         // or else things go wrong pretty quickly. The next line is making the car body follow the spehere.
-        transform.position = sphereRigidbody.transform.position;
+        if (hitByExplosion)
+        {
+            sphereRigidbody.transform.position = transform.position;
+            bodyRigidbody.constraints = RigidbodyConstraints.None;
+        }
+        else
+        {
+            // Original line
+            transform.position = sphereRigidbody.transform.position;
+
+            bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
+            bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;       
+        }
     }
 
     void CheckIfGrounded()

@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Car.Combat;
 
 public class CarController : MonoBehaviour
 {
@@ -14,11 +15,16 @@ public class CarController : MonoBehaviour
     [SerializeField] float distanceCheck = .2f;
     [SerializeField] LayerMask groundLayers;
     [SerializeField] float gravity = 50f;
+    Fighter fighter;
 
     float moveInput;
     float turnInput;
     bool isGrounded;
 
+    void Awake()
+    {
+        fighter = GetComponent<Fighter>();
+    }
     void Start()
     {
         // this simply is making sure we don't have issues with the car body following the sphere
@@ -47,6 +53,11 @@ public class CarController : MonoBehaviour
         MovementInput();
         TurnVehicle();
         MoveCarBodyWithSphere();
+        
+        if (Input.GetKeyDown("space"))
+        {
+            fighter.FireWeapon();
+        }
     }
 
     private void MovementInput()
