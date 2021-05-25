@@ -15,6 +15,9 @@ namespace Car.Combat
         [SerializeField] float projectileSpeed = 100f;
         [SerializeField] float explosionForce = 1500f;
         [SerializeField] float explosionRadius = 5f;
+        [Tooltip("A small amount of force applied when the projectile hits an enemy. Should be a small amount as they will explode off scene with explosion force when they die")]
+        [SerializeField] float initialHitForce = 300f;
+        [SerializeField] float damage = 10f;
         //[SerializeField] 
         // particle systems
 
@@ -38,9 +41,19 @@ namespace Car.Combat
             return explosionForce;
         }
 
+        public float GetInitialHitForce()
+        {
+            return initialHitForce;
+        }
+
         public float GetExplosionRadius()
         {
             return explosionRadius;
+        }
+
+        public float GetDamage()
+        {
+            return damage;
         }
     }
     

@@ -7,7 +7,6 @@ namespace Car.Combat
     {
         Rigidbody rb;
         Weapon weapon;
-        [SerializeField] float speed = 100f;
         [SerializeField] ParticleEmissionStopper emissionStopper;
         [SerializeField] bool destroyOnContact = true;
         bool shouldExplode = false;
@@ -17,13 +16,22 @@ namespace Car.Combat
         void Awake()
         {
             rb = GetComponent<Rigidbody>(); 
-        }           
+        }   
+
+        void LateUpdate()
+        {
+            // if (isLaunching)
+            // {
+            //     transform.Translate(launchTransform.forward * weapon.GetProjectileSpeed() * Time.deltaTime);
+
+            // }    
+        }        
 
         void FixedUpdate()
         {
             if (isLaunching)
             {
-                rb.AddForce(launchTransform.forward * speed * Time.deltaTime);
+                rb.AddForce(launchTransform.forward * weapon.GetProjectileSpeed() * Time.deltaTime);
                 isLaunching = false;
 
             }
@@ -37,12 +45,23 @@ namespace Car.Combat
                         AIController aiController = hit.GetComponent<AIController>();
                         if (aiController == null) return;
 
-                        aiController.FreezeMovementFromExplosion();
-
-                        Rigidbody hitRB = aiController.GetRigidBody();
-                        Vector3 forceDirection = transform.forward + transform.position - hit.transform.position;
-                        hitRB.AddForce(forceDirection.normalized * weapon.GetExplosionForce());
-                        //hitRB.AddExplosionForce(weapon.GetExplosionForce(), transform.position, weapon.GetExplosionRadius(), 1, ForceMode.Impulse);                                 
+                        aiController.HitByWeapon(weapon);                      
+                        
+                        if (!aiController.GetIsDead())
+                        {
+                            Rigidbody hitRB = aiController.GetSphereRigidBody();
+                            aiController.FreezeMovementFromHit(0.5f);
+                            Vector3 forceDirection = transform.position - hit.transform.position;
+                            hitRB.AddForce(forceDirection.normalized * weapon.GetInitialHitForce());
+                        }
+                        else
+                        {
+                            Rigidbody hitRB = aiController.GetBodyRigidBody();
+                            aiController.FreezeMovementFromExplosion(3f);
+                            hitRB.AddExplosionForce(weapon.GetExplosionForce(), transform.position, weapon.GetExplosionRadius(), 1, ForceMode.Impulse);
+                            
+                        }                                              
+                                                         
                     }
                 }
                 shouldExplode = false;
@@ -65,6 +84,7 @@ namespace Car.Combat
             } 
             else if (other.gameObject.layer == LayerMask.NameToLayer("Ground Layer"))
             {
+                print("hit ground");
                 StopEmissionsAndDestroy(2f);
             }       
         }

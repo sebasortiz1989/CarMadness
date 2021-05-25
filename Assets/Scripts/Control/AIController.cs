@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Car.Core;
+using Car.Combat;
 
 public class AIController : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class AIController : MonoBehaviour
     [SerializeField] float attackRange = 5f; // TODO make this dependant on weapon
     [SerializeField] float fleeDistance = 10f;
     [SerializeField] float rotationRecoverySpeed = 5f;
+    Quaternion initialRotation;
+    Health health;
     Vector3 goalVector;
     int currentWaypoint = 0;
     Transform player;
@@ -20,6 +24,8 @@ public class AIController : MonoBehaviour
     int WPCircuitIndex = 0;
     bool shouldProcessInputs = true;
     bool hitByExplosion = false;
+    bool isHit = false;
+    bool isDead = false;
     //Fighter fighter;
     //bool attackCooldown = false;
 
@@ -40,6 +46,7 @@ public class AIController : MonoBehaviour
     void Awake()
     {
         player = GameObject.FindWithTag("Player").transform; // TODO how to use a manager instead?
+        health = GetComponent<Health>();
         //fighter = GetComponent<Fighter>();
     }
 
@@ -55,6 +62,7 @@ public class AIController : MonoBehaviour
             currentWaypoint = UnityEngine.Random.Range(0, GetCurrentCircuit().Waypoints.Length);
         }
         
+        initialRotation = transform.rotation;
     }
 
     void FixedUpdate()
@@ -77,6 +85,7 @@ public class AIController : MonoBehaviour
 
     void LateUpdate()
     {
+        // if (isDead) return;
         //if (!shouldProcessInputs) return;
 
         if (IsInChaseRange())
@@ -224,22 +233,45 @@ public class AIController : MonoBehaviour
         transform.Rotate(0, newRotation, 0, Space.World);
     }
 
-    public Rigidbody GetRigidBody()
+    public void HitByWeapon(Weapon weapon)
+    {
+        health.AffectHealth(-weapon.GetDamage());
+    }
+
+    public void Die()
+    {
+        isDead = true;
+        // TODO start coroutine of them exploding and destroy
+    }
+
+    public Rigidbody GetSphereRigidBody()
+    {
+        return sphereRigidbody;
+    }
+
+    public Rigidbody GetBodyRigidBody()
     {
         return bodyRigidbody;
     }
 
-    public void FreezeMovementFromExplosion()
+    public void FreezeMovementFromExplosion(float freezeTime)
     {
         //shouldProcessInputs = false;
         hitByExplosion = true;
-        Invoke("RecoverMovement", 4f); // TODO shouldn't be able to move once grounded
+        Invoke("RecoverMovement", freezeTime); // TODO shouldn't be able to move once grounded
+    }
+
+    public void FreezeMovementFromHit(float freezeTime)
+    {
+        isHit = true;
+        Invoke("RecoverMovement", freezeTime); // TODO shouldn't be able to move once grounded
     }
 
     private void RecoverMovement()
     {
         shouldProcessInputs = true;
         hitByExplosion = false;
+        isHit = false;
 
     }
 
@@ -252,15 +284,39 @@ public class AIController : MonoBehaviour
             sphereRigidbody.transform.position = transform.position;
             bodyRigidbody.constraints = RigidbodyConstraints.None;
         }
+        else if (isHit)
+        {
+            transform.position = sphereRigidbody.transform.position;
+            bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
+            bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;
+            bodyRigidbody.constraints = RigidbodyConstraints.FreezePositionY;
+        }
         else
         {
             // Original line
             transform.position = sphereRigidbody.transform.position;
 
-            // Need to reset rotation?
-
+            bodyRigidbody.constraints = RigidbodyConstraints.None; // clear before setting
             bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
-            bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;       
+            bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;
+
+            // Need to reset rotation?
+            // if (isRecoveringRotation)
+            // {
+            //     transform.rotation = Quaternion.Slerp(transform.rotation, initialRotation, rotationRecoverySpeed * Time.deltaTime);
+            //     if (transform.rotation == initialRotation)
+            //     {
+            //         bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
+            //         bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;       
+            //         isRecoveringRotation = false;
+            //     }
+            // }
+            // else
+            // {
+            //     bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
+            //     bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;       
+            // }
+            
         }
     }
 
@@ -275,6 +331,11 @@ public class AIController : MonoBehaviour
         {
             //print("well, well, it appears I'm not touching what I believe to be the ground, dude");
         }
+    }
+
+    public bool GetIsDead()
+    {
+        return isDead;
     }
 
     void OnDrawGizmosSelected()
