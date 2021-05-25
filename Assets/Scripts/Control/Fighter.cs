@@ -24,8 +24,11 @@ namespace Car.Combat
         {
             GameObject leftWeapon = Instantiate(weapon.GetPrefab(), leftWeaponTransform);
             leftLaunchTransform = leftWeapon.GetComponent<Cannon>().GetLaunchTransform();
+            //leftLaunchTransform.position += new Vector3(1.041f, 0, 2.33f); 
+
 
             GameObject rightWeapon = Instantiate(weapon.GetPrefab(), rightWeaponTransform);
+            //rightLaunchTransform.position += new Vector3(1.041f, 0, 2.33f); 
             rightLaunchTransform = rightWeapon.GetComponent<Cannon>().GetLaunchTransform();
         }
 

@@ -71,7 +71,7 @@ public class AIController : MonoBehaviour
         else
         {
             // make the car respond to gravity when it is not grounded
-            sphereRigidbody.AddForce(transform.up * -gravity);
+            //bodyRigidbody.AddForce(transform.up * -gravity);
         }
     }
 
@@ -158,7 +158,7 @@ public class AIController : MonoBehaviour
 
     private void MovementInput()
     {
-        if (!shouldProcessInputs) return;
+        //if (!shouldProcessInputs) return;
         goalVector = goal.position - transform.position;
         if (goalVector.magnitude > 1) // todo fix magic number accuracy
         {
@@ -181,7 +181,7 @@ public class AIController : MonoBehaviour
 
     void TurnVehicle()
     {
-        if (!shouldProcessInputs) return;
+       // if (!shouldProcessInputs) return;
 
         if (Vector3.Angle(transform.forward, goalVector) > turnAngleThreshold) 
         {
@@ -231,7 +231,7 @@ public class AIController : MonoBehaviour
 
     public void FreezeMovementFromExplosion()
     {
-        shouldProcessInputs = false;
+        //shouldProcessInputs = false;
         hitByExplosion = true;
         Invoke("RecoverMovement", 4f); // TODO shouldn't be able to move once grounded
     }
@@ -256,6 +256,8 @@ public class AIController : MonoBehaviour
         {
             // Original line
             transform.position = sphereRigidbody.transform.position;
+
+            // Need to reset rotation?
 
             bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
             bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;       

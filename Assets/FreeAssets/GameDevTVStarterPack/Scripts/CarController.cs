@@ -14,7 +14,7 @@ public class CarController : MonoBehaviour
     [SerializeField] float turnSpeed;
     [SerializeField] float distanceCheck = .2f;
     [SerializeField] LayerMask groundLayers;
-    [SerializeField] float gravity = 50f;
+    [SerializeField] float gravity = 980f;
     Fighter fighter;
 
     float moveInput;

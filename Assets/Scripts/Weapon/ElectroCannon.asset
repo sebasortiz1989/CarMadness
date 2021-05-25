@@ -16,5 +16,5 @@ MonoBehaviour:
   isProjectile: 1
   projectilePrefab: {fileID: 5084071075114527423, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
   projectileSpeed: 400
-  explosionForce: 5000
+  explosionForce: 100000
   explosionRadius: 5

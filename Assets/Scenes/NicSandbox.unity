@@ -22849,63 +22849,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1001 &1985122871505573580
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5877937244500027500, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6540365253525845073, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
-      propertyPath: m_Name
-      value: ElectroProjectile
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eb4a5d07497522b4aa307fda9d7d6c7e, type: 3}
 --- !u!212 &2120540986257875673
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22983,6 +22926,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 155783749476335423, guid: 7810c413a058c1b41975a0d4f3c49acb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.33
+      objectReference: {fileID: 0}
     - target: {fileID: 346495005445578732, guid: 7810c413a058c1b41975a0d4f3c49acb, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -23043,9 +22990,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3655373591335000995, guid: 7810c413a058c1b41975a0d4f3c49acb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3655373591335000995, guid: 7810c413a058c1b41975a0d4f3c49acb, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6459610064383158971, guid: 7810c413a058c1b41975a0d4f3c49acb, type: 3}
       propertyPath: m_Name
       value: Core
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688913299545234637, guid: 7810c413a058c1b41975a0d4f3c49acb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.33
       objectReference: {fileID: 0}
     - target: {fileID: 7818592503712859666, guid: 7810c413a058c1b41975a0d4f3c49acb, type: 3}
       propertyPath: m_AnchorMax.y
