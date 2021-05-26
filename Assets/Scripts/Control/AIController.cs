@@ -26,7 +26,7 @@ public class AIController : MonoBehaviour
     bool hitByExplosion = false;
     bool isHit = false;
     bool isDead = false;
-    //Fighter fighter;
+    Fighter fighter;
     //bool attackCooldown = false;
 
     [SerializeField] Rigidbody sphereRigidbody;
@@ -47,7 +47,7 @@ public class AIController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player").transform; // TODO how to use a manager instead?
         health = GetComponent<Health>();
-        //fighter = GetComponent<Fighter>();
+        fighter = GetComponent<Fighter>();
     }
 
     void Start()
@@ -140,6 +140,7 @@ public class AIController : MonoBehaviour
     private void AttackBehaviour()
     {
         //print("I'm attacking!");
+        fighter.Attack(player);
         
     }
 
@@ -233,9 +234,9 @@ public class AIController : MonoBehaviour
         transform.Rotate(0, newRotation, 0, Space.World);
     }
 
-    public void HitByWeapon(Weapon weapon)
+    public void AffectHealth(float damage)
     {
-        health.AffectHealth(-weapon.GetDamage());
+        health.AffectHealth(-damage);
     }
 
     public void Die()
@@ -296,7 +297,7 @@ public class AIController : MonoBehaviour
             // Original line
             transform.position = sphereRigidbody.transform.position;
 
-            bodyRigidbody.constraints = RigidbodyConstraints.None; // clear before setting
+            //bodyRigidbody.constraints = RigidbodyConstraints.None; // clear before setting
             bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
             bodyRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;
 
@@ -340,8 +341,11 @@ public class AIController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, chaseRange);    
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
         
     }
 }

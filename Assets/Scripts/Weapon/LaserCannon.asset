@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9fd45dc6963fcd84294972f542590ac6, type: 3}
-  m_Name: ElectroCannon
+  m_Name: LaserCannon
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8737336534644831057, guid: 51ad85b16054d27418666cb04b90f9a4, type: 3}
+  prefab: {fileID: 5984181264327486113, guid: 2b348da3e609ef442988503ac7238aae, type: 3}
   isProjectile: 1
-  projectilePrefab: {fileID: 8414924450584987470, guid: f9d1821fc94fbb74aa08dc6950205121, type: 3}
+  projectilePrefab: {fileID: 2473240477268089227, guid: 5e5a9c5d572275442b779ef0cffe990d, type: 3}
   projectileSpeed: 400000
   shouldStopOnImpact: 1
-  shouldExplode: 0
+  shouldExplode: 1
   explosionForce: 2500
   explosionRadius: 5
   hitForce: 80000
   damage: 10
-  attackCooldownSeconds: 2

@@ -84,6 +84,7 @@ public class CarController : MonoBehaviour
     {
         // With your car game object, be sure that the car body and sphere start in exactly the same position
         // or else things go wrong pretty quickly. The next line is making the car body follow the spehere.
+        
         transform.position = sphereRigidbody.transform.position;
     }
 

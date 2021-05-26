@@ -22,11 +22,11 @@ namespace Car.UI
             health.onHealthUpdated -= SetHealth;
         }
 
-        void Start()
-        {
-            rootCanvas.gameObject.SetActive(false);
+        // void Start()
+        // {
+        //     rootCanvas.gameObject.SetActive(false);
 
-        }
+        // }
 
         private void SetHealth()
         {
@@ -40,7 +40,12 @@ namespace Car.UI
 
         private void MakeHealthBarVisible()
         {
-            if (!rootCanvas.gameObject.activeSelf)
+            if (Mathf.Approximately(health.GetHealthFraction(), 1) || 
+                        Mathf.Approximately(health.GetHealthFraction(), 0))
+            {
+                rootCanvas.gameObject.SetActive(false);
+            }
+            else
             {
                 rootCanvas.gameObject.SetActive(true);
             }

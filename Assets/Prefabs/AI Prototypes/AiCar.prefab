@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 1154201912209879055}
   - component: {fileID: 6657834038201445646}
   - component: {fileID: 7535652031131676419}
+  - component: {fileID: 146822884873909534}
   m_Layer: 0
   m_Name: AiCar
   m_TagString: Car
@@ -285,6 +286,7 @@ Transform:
   - {fileID: 3151779992141698884}
   - {fileID: 1732221225287081555}
   - {fileID: 4147449598988345351}
+  - {fileID: 2473232639273350377}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -319,8 +321,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   turnAngleThreshold: 8
-  chaseRange: 16.44
-  attackRange: 5
+  chaseRange: 45
+  attackRange: 30
   fleeDistance: 10
   rotationRecoverySpeed: 5
   sphereRigidbody: {fileID: 4416712352965771976}
@@ -341,7 +343,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4416712351308733372}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 0.9, z: 1.62}
@@ -354,7 +356,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4416712351308733372}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1.2, z: 1.1}
@@ -388,7 +390,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  deathFX: {fileID: 0}
+  fxParent: {fileID: 0}
+  objsToOffOnDeath: []
   health: 0
+--- !u!114 &146822884873909534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416712351308733372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bfe104bb266a844d994f01f58329904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 11400000, guid: 76cfd7024f5e954419f2e947b42fd263, type: 2}
+  leftWeaponTransform: {fileID: 2473232639273350377}
+  rightWeaponTransform: {fileID: 0}
+  attackAngle: 20
 --- !u!1 &4416712352965771977
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,6 +597,36 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5908499359930730596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2473232639273350377}
+  m_Layer: 0
+  m_Name: WeaponTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2473232639273350377
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5908499359930730596}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2.89}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4416712351308733374}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7530690056916724842
 GameObject:
   m_ObjectHideFlags: 0
