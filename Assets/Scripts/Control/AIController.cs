@@ -22,9 +22,9 @@ namespace Car.Control
         Health health;
         Vector3 goalVector;
         int currentWaypoint = 0;
-        public Vector3[] corners;
-        int currentCornerWP = 0;
-        NavMeshPath currentPath;
+        //public Vector3[] corners;
+        //int currentCornerWP = 0;
+        //NavMeshPath currentPath;
         Transform player;
         bool isChasingPlayer = false;
         int WPCircuitIndex = 0;
@@ -64,11 +64,11 @@ namespace Car.Control
             sphereRigidbody.transform.parent = null;
 
             // // randomize which cars end up using which circuit
-            // if (circuits.Length > 0)
-            // {
-            //     WPCircuitIndex = UnityEngine.Random.Range(0, circuits.Length);
-            //     currentWaypoint = 0;//UnityEngine.Random.Range(0, GetCurrentCircuit().Waypoints.Length);
-            // }
+            if (circuits.Length > 0)
+            {
+                WPCircuitIndex = UnityEngine.Random.Range(0, circuits.Length);
+                currentWaypoint = 0;//UnityEngine.Random.Range(0, GetCurrentCircuit().Waypoints.Length);
+            }
             
             initialRotation = transform.rotation;
         }
@@ -87,7 +87,7 @@ namespace Car.Control
             else
             {
                 // make the car respond to gravity when it is not grounded
-                //bodyRigidbody.AddForce(transform.up * -gravity);
+                bodyRigidbody.AddForce(transform.up * -gravity);
             }
         }
 
@@ -115,7 +115,7 @@ namespace Car.Control
             }
                 
             // TODO check if car is stuck
-            //SetWaypoint();
+            SetWaypoint();
             //SetWaypointFromNavMesh();
             
             MovementInput();
@@ -125,6 +125,11 @@ namespace Car.Control
 
             
 
+        }
+
+        public void SetGoal(Vector3 pos)
+        {
+            goal = new Vector3(pos.x, transform.position.y, pos.z);
         }
 
         private void SetWaypointFromNavMesh()
@@ -153,7 +158,7 @@ namespace Car.Control
 
         }
 
-         private void SetWaypoint()
+        private void SetWaypoint()
         {
             if (GetCurrentCircuit().Waypoints.Length == 0) return;
             if (isChasingPlayer) return;
